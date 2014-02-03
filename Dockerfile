@@ -33,5 +33,5 @@ RUN cd /app;\
 
 ENV LANG en_US.UTF-8
 ENV LOG_LEVEL DEBUG
-ENV RACK_ENV production
-ENV RAILS_ENV production
+ENV RACK_ENV development 
+ENV RAILS_ENV development 
