@@ -1,0 +1,23 @@
+# Start web process
+#
+# VERSION 0.1
+#
+# Builds a new container image and starts web process.
+#
+# Note: Use repository with preinstalled and configured application
+#
+
+# Use the ubuntu base image with installed allout platform
+FROM ubuntu:test_app
+
+MAINTAINER Scott Feinberg <feinberg.scott@gmail.com>
+
+WORKDIR app
+
+RUN cd /app;\
+	bundle exec rake assets:precompile;
+
+ENTRYPOINT ["bundle", "exec"]
+CMD ["rails", "server"]
+
+EXPOSE 3000

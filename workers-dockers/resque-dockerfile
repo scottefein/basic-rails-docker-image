@@ -1,0 +1,19 @@
+# Start resque worker
+#
+# VERSION 0.1
+#
+# Builds a new container image and starts resque worker.
+#
+# Note: Use repository with preinstalled and configured application
+#
+
+# Use the ubuntu base image with installed allout platform
+FROM ubuntu:test_app
+
+MAINTAINER Scott Feinberg <feinberg.scott@gmail.com>
+
+WORKDIR app
+
+ENTRYPOINT ["bundle", "exec"]
+CMD ["rake", "resque:work", "QUEUE=*","VERBOSE=1"]
+

@@ -1,0 +1,16 @@
+set daemon  20
+set logfile /var/log/monit.log
+set alert email@example.com  with mail-format {from: monit@example.com subject: monit $ACTION -- $EVENT $SERVICE at $HOST} with reminder on 5 cycles
+#set mailserver smtp.gmail.com username "email@gmail.com" password "somepassword" using tlsv1 with timeout 15 seconds
+set httpd port 2812 and
+    use address localhost  # only accept connection from localhost
+    allow localhost        # allow localhost to connect to the server and
+
+check process nginx 
+  with pidfile "/var/run/nginx.pid"
+  start program = "/etc/init.d/nginx start"
+  stop program = "/etc/init.d/nginx stop"
+  if failed host localhost port 80 then restart
+  if 5 restarts within 5 cycles then timeout
+
+# docker workers start from here

@@ -1,0 +1,39 @@
+BUILDING IMAGES:
+
+docker build -t ubuntu:test_app . # Use this tag for workers-dockers
+docker build -t test_app:web - < workers-dockers/web-dockerfile
+
+
+ SETUP LB AND MONITORING:
+
+- ./mngmt_setup.sh nginx
+- ./mngmt_setup.sh monit  # You need to configure email credentials in monitrc to recieve action notifications.
+Each new started container will be added under monitoring automatically and removed from it when you use Stop option. So if you want to stop
+some worker manually use Monit to do this.
+
+Basic monit commands:
+monit status  # shows status of the processes and using resources
+monit start/stop <process>  # to start/stop process
+monit (un)monitor <process> # to stop/start monitoring for particular process
+
+Please find more info about monit configuration at http://mmonit.com/monit/documentation/monit.html
+
+ 
+ START WORKERS:
+
+./start_worker.sh -w web -c 3 -p 3000 -r test_app  # In this case 3 workers totally will be running ib the system.
+
+
+STOP ALL WORKERS:
+
+./start_worker.sh -S  # to stop all running containers
+./start_worker.sh -s web  # to stop running container of the specified type
+
+
+DELETE CONTAINER:
+./start_worker.sh -w clock -D  # This command will remove all containers of specified type from the system if no-one is running.
+
+
+RELOAD CONTAINERS:
+If you code-base is changesd you might need to rebuild running containers.
+./start_worker.sh -w web -c2 -r new_platform  # This command will stop running containers, delete them from system, build and run a new one(s).
